@@ -23,6 +23,7 @@
  * 
  * ==============================================================*/
 
+using System;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System.IO;
@@ -46,6 +47,8 @@ namespace UseBasicFormulaInXlsx
             s1.GetRow(1).CreateCell(2).SetCellValue(7.623);
             //set A3
             s1.CreateRow(2).CreateCell(0).SetCellValue(2.2);
+            //set B3
+            s1.GetRow(2).CreateCell(1).SetCellValue(3);
 
             //set A4=A2+A3
             s1.CreateRow(3).CreateCell(0).CellFormula = "A2+A3";
@@ -53,6 +56,8 @@ namespace UseBasicFormulaInXlsx
             s1.GetRow(1).CreateCell(3).CellFormula = "SUM(A2:C2)";
             //set A5=cos(5)+sin(10)
             s1.CreateRow(4).CreateCell(0).CellFormula = "cos(5)+sin(10)";
+            //set D5=AVERAGE($A$2:$C$2)/B3
+            s1.CreateRow(4).CreateCell(3).CellFormula = "AVERAGE($A$2:$C$2)/B3";
 
             //create another sheet
             ISheet s2 = workbook.CreateSheet("Sheet2");
@@ -66,7 +71,7 @@ namespace UseBasicFormulaInXlsx
         static void WriteToFile()
         {
             //Write the stream data of workbook to the root directory
-            FileStream file = new FileStream(@"test.xlsx", FileMode.Create);
+            FileStream file = new FileStream($@"test{DateTime.Now:yyyyMMddHHmmss-fff}.xlsx", FileMode.Create);
             workbook.Write(file);
             file.Close();
         }
